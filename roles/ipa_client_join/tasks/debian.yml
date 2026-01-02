@@ -1,0 +1,12 @@
+- name: Install FreeIPA client packages on Debian-family OS
+  apt:
+    name:
+      - freeipa-client
+      - sssd
+      - krb5-user
+      - auth-client-config
+      - oddjob
+      - oddjob-mkhomedir
+    state: present
+    update_cache: yes
+  become: true

@@ -1,0 +1,43 @@
+---
+- name: debian tasks
+  include_tasks: debian.yml
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: redhat tasks
+  include_tasks: redhat.yml
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: join domain
+  command: >
+    ipa-client-install
+    --domain={{ ipa_domain }}
+    --server={{ ipa_server1 }},{{ ipa_server2 }}
+    --realm={{ ipa_realm }}
+    --principal={{ ipa_admin_user }}
+    --password={{ ipa_admin_password }}
+    --mkhomedir
+    --force-join
+    --unattend
+  register: ipa_join
+  changed_when: "'Client successfully enrolled' in ipa_join.stdout"
+
+- name: authenticate
+  command: kinit {{ ipa_admin_user }}@{{ ipa_realm }}
+  register: kinit_result
+  changed_when: false
+
+- name: apply maps & policies
+  command: ipa-client-automount
+  when: kinit_result.rc == 0
+  ignore_errors: yes
+
+- name: restart sssd
+  service:
+    name: sssd
+    state: restarted
+
+- name: reboot if needed
+  reboot:
+    msg: "Rebooting to complete IPA Setup"
+    pre_reboot_delay: 5
+    when: "'Reboot required' in ipa_join.stdout"

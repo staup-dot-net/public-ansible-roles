@@ -1,0 +1,13 @@
+---
+- name: free ipaclient install
+  dnf:
+    name:
+      - ipa-client
+      - sssd
+      - krb5-workstation
+      - authconfig
+      - oddjob
+      - oddjob-mkhomedir
+      - adcli
+    state: present
+  become: true

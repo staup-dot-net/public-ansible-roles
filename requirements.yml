@@ -1,0 +1,3 @@
+- src: git+https://github.com/staup-dot-net/public-ansible-roles.git
+  version: main
+  name: ipa_client_join

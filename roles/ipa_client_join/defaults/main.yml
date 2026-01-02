@@ -1,0 +1,7 @@
+---
+ipa_domain: your.domain.here
+ipa_realm: YOUR.DOMAIN.HERE
+ipa_server1: server1.your.domain.here
+ipa_server2: server2.your.domain.here
+ipa_admin_user: youradminuser
+ipa_admin_password: ""

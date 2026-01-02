@@ -1,0 +1,6 @@
+---
+galaxy_info:
+  author: "pasta-up"
+  description: "installs/configs freeipa client"
+  platforms:
+    - name: Ubuntu
